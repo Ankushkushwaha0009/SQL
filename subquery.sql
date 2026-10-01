@@ -28,9 +28,7 @@ top query will run and give the result
 -- employee_salary 
 -- where salary > ( select AVG(salary) from employee_salary ) ; 
 
-
 -- Find the employee(s) who have the highest salary.
-
 
 -- select name  , salary from employee_salary
 -- where salary = (
@@ -48,7 +46,6 @@ top query will run and give the result
 
 -- Find all employees who work in the same 
 -- departments as Rahul.
-
 
 -- first way to write the query for this 
 
@@ -70,3 +67,62 @@ top query will run and give the result
 
 -- Find employees who earn more than the highest-paid 
 -- employee in the HR department.
+
+select name from employee_salary
+where salary > (
+  select MAX(salary) from employee_salary 
+  where department = 'HR'
+) ; 
+
+-- Find the employee(s) who have 
+-- the same salary as Rahul.
+
+select name from employee_salary
+where salary = (
+  select salary from employee_salary 
+  where name = 'Rahul'
+) ; 
+
+-- *************IMPORTANT************ ------
+
+-- Find employees who earn more than the average 
+-- salary of their department.....
+-- find the average salary in department wise ...
+
+-- select AVG(salary) from (
+-- SELECT department, AVG(salary)
+-- FROM employee_salary
+-- GROUP BY department;
+
+select AVG(salary) from employee_salary ;
+
+select name , salary, department
+from employee_salary e1 
+where  salary > (
+  select AVG(salary) from employee_salary e2
+  where e1.department = e2.department
+);
+
+-- Inner query becomes 
+/* SELECT AVG(salary)
+FROM employee_salary
+WHERE department = 'IT';
+*/
+
+-- Find employees whose salary is greater 
+-- than the salary of Rahul
+
+select name , salary from employee_salary
+where salary > (
+  select salary from employee_salary 
+  where name = 'Rahul'
+) ; 
+
+-- Find employees whose salary is greater
+-- than the average salary of their department.
+
+select name , salary , department from employee_salary e1
+where salary > (
+  select AVG(salary) from employee_salary e2
+  where e1.department = e2.department
+)
